@@ -16,8 +16,7 @@ from dataset import DataSet
 if __name__ == "__main__":
     mlp = MultiLayerPerceptron()
     mlp.addLayer(2048)
-    mlp.addLayer(1024)
+    mlp.addLayer(2048)
     mlp.addLayer(300)
-    # mlp.addLayer(1)
-    mlp.setInputs(DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"), DataSet("datasets/Validation/valVectors.csv", "datasets/Validation/valLbls.csv"))
+    mlp.setInputs(DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"), DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"))
     mlp.train()
