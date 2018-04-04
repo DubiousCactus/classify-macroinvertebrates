@@ -11,6 +11,7 @@ Multi-layer Perceptron
 """
 
 import os
+import csv
 import tensorflow as tf
 
 class MultiLayerPerceptron:
@@ -118,8 +119,7 @@ class MultiLayerPerceptron:
             print("Accuracy:", accuracy.eval({self.inputs: self.validation.vectors, self.outputs: self.validation.labels_tensor()}))
 
             self.session = sess
-            self.train_op = train_op
-            self.loss_op = loss_op
+            self.logits = logits
             usr_input = 'n'
             usr_input = input("Save model? [y/N]: ")
 
@@ -128,13 +128,31 @@ class MultiLayerPerceptron:
                 save_path = saver.save(sess, "./model.ckpt")
                 print("Model saved in path: " + save_path)
 
-            print(sess.run([self.train_op, self.loss_op], feed_dict={self.inputs: self.testing.vectors, self.outputs: self.testing.labels_tensor()}))
+            # Testing now
+            prediction = tf.argmax(self.logits, 1)
+            best = sess.run([prediction], feed_dict={self.inputs: self.testing.vectors})
+            self.exportTest(best[0])
+
+
+    def exportTest(self, predictions):
+        with open('testing.csv', 'w', newline='') as fp:
+            output = csv.writer(fp, delimiter=',')
+            data = []
+            data.append(['ID', 'Label']) # Header
+
+            print(predictions)
+            for i, label in enumerate(predictions):
+                print(label)
+                data.append([i + 1, label - 1])
+
+            output.writerows(data)
+
 
     def test(self, session = None):
         if session is None:
             session = self.session
 
-        with session as sess:
-            # Testing now
-            print(sess.run([self.train_op, self.loss_op], feed_dict={self.inputs: self.testing.vectors}))
-            # sess.close()
+        # Testing now
+        prediction = tf.argmax(self.logits, 1)
+        best = session.run([prediction], feed_dict={self.inputs: self.testing.vectors})
+        print(best)
