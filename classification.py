@@ -18,11 +18,10 @@ from dataset import DataSet
 
 if __name__ == "__main__":
     mlp = MultiLayerPerceptron()
-    mlp.epochs = 50
-    mlp.addLayer(6000)
-    mlp.addLayer(6000)
+    mlp.epochs = 3
     mlp.addLayer(2048)
-    mlp.addLayer(300)
+    mlp.addLayer(2048)
+    mlp.addLayer(128)
     mlp.setInputs(
         DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
         DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
@@ -39,7 +38,7 @@ if __name__ == "__main__":
             sess = tf.Session()
             saver.restore(sess, "model.ckpt")
             print("Model restored.")
-            mlp.test(sess)
+            # mlp.test(sess)
         else:
             mlp.train()
             # mlp.test()

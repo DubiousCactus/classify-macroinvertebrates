@@ -32,6 +32,7 @@ class DataSet:
         file_ = open(file_path, 'r')
         self.vectors = [np.array(line.split(','), np.float64) for line in file_]
         self.vectors = np.transpose(self.vectors) # Transposed in the file, for some reason...
+        self.vectors /= self.vectors.max()
 
     
     def shuffle(self):
@@ -48,9 +49,12 @@ class DataSet:
             to = len(self.labels)
 
         tensor = []
-        for label in self.labels[from_:to]:
-            tensor.append(np.zeros(len(set(self.labels))))
-            tensor[-1][label - 1] = 1
+        if len(self.labels) == 0:
+            tensor = [np.zeros(29)] * len(self.vectors)
+        else:
+            for label in self.labels[from_:to]:
+                tensor.append(np.zeros(len(set(self.labels))))
+                tensor[-1][label - 1] = 1
 
         return tensor
 

@@ -128,6 +128,7 @@ class MultiLayerPerceptron:
                 save_path = saver.save(sess, "./model.ckpt")
                 print("Model saved in path: " + save_path)
 
+            print(sess.run([self.train_op, self.loss_op], feed_dict={self.inputs: self.testing.vectors, self.outputs: self.testing.labels_tensor()}))
 
     def test(self, session = None):
         if session is None:
@@ -135,5 +136,5 @@ class MultiLayerPerceptron:
 
         with session as sess:
             # Testing now
-            print(sess.run([self.train_op, self.loss_op], feed_dict={self.inputs: self.training.vectors}))
+            print(sess.run([self.train_op, self.loss_op], feed_dict={self.inputs: self.testing.vectors}))
             # sess.close()
