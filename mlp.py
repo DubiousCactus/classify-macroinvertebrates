@@ -10,13 +10,14 @@
 Multi-layer Perceptron
 """
 
+import os
 import tensorflow as tf
 
 class MultiLayerPerceptron:
 
     learning_rate = 0.05
     epochs = 15
-    batch_size = 20
+    batch_size = 30
 
     def __init__(self, nb_pixels = 4096, nb_classes = 29):
         self.nb_pixels = nb_pixels
@@ -28,7 +29,7 @@ class MultiLayerPerceptron:
         self.hidden_outputs = []
 
 
-    def setInputs(self, training, validation, testing = None):
+    def setInputs(self, training, validation, testing):
         self.training = training
         self.validation = validation
         self.testing = testing
@@ -77,7 +78,7 @@ class MultiLayerPerceptron:
     def train(self):
         # Define loss
         logits = self.createGraph()
-        loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=self.outputs))
+        loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=logits, labels=self.outputs))
 
         # Setup the optimizer
         # optimizer = tf.train.GradientDescentOptimizer(learning_rate = self.learning_rate)
@@ -87,9 +88,14 @@ class MultiLayerPerceptron:
         # finally setup the initialisation operator
         init_op = tf.global_variables_initializer()
 
+        # Add ops to save and restore all the variables.
+        saver = tf.train.Saver()
+
+
         with tf.Session() as sess:
             # Init variables
             sess.run(init_op)
+
             total_batch = int(len(self.training.vectors) / self.batch_size)
 
             for epoch in range(self.epochs):
@@ -102,11 +108,32 @@ class MultiLayerPerceptron:
                     _, c = sess.run([train_op, loss_op], feed_dict = {self.inputs: batch_inputs, self.outputs: batch_outputs})
                     avg_cost += c / total_batch
 
-                print("Epoch: ", epoch + 1, "cost = ", "{:.9f}".format(avg_cost))
+                print("Epoch: ", epoch + 1, "cost = ", "{:.2f}".format(avg_cost))
             print("Optimization Finished!")
-            # Test model
+            # Validation model
             pred = tf.nn.softmax(logits)  # Apply softmax to logits
             correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(self.outputs, 1))
             # Calculate accuracy
             accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float32"))
             print("Accuracy:", accuracy.eval({self.inputs: self.validation.vectors, self.outputs: self.validation.labels_tensor()}))
+
+            self.session = sess
+            self.train_op = train_op
+            self.loss_op = loss_op
+            usr_input = 'n'
+            usr_input = input("Save model? [y/N]: ")
+
+            if usr_input.lower() == 'y':
+                # Save the variables to disk.
+                save_path = saver.save(sess, "./model.ckpt")
+                print("Model saved in path: " + save_path)
+
+
+    def test(self, session = None):
+        if session is None:
+            session = self.session
+
+        with session as sess:
+            # Testing now
+            print(sess.run([self.train_op, self.loss_op], feed_dict={self.inputs: self.training.vectors}))
+            # sess.close()

@@ -10,13 +10,39 @@
 Main class
 """
 
+import os
+import tensorflow as tf
+
 from mlp import MultiLayerPerceptron
 from dataset import DataSet
 
 if __name__ == "__main__":
     mlp = MultiLayerPerceptron()
-    mlp.addLayer(2048)
+    mlp.epochs = 50
+    mlp.addLayer(6000)
+    mlp.addLayer(6000)
     mlp.addLayer(2048)
     mlp.addLayer(300)
-    mlp.setInputs(DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"), DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"))
-    mlp.train()
+    mlp.setInputs(
+        DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
+        DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
+        DataSet("datasets/Test/testVectors.csv")
+    )
+
+    if os.path.isfile("model.ckpt.index"):
+        usr_input = 'n'
+        usr_input = input("Restore model? [y/N]: ")
+
+        if usr_input.lower() == 'y':
+            # Restore variables from disk.
+            saver = tf.train.Saver()
+            sess = tf.Session()
+            saver.restore(sess, "model.ckpt")
+            print("Model restored.")
+            mlp.test(sess)
+        else:
+            mlp.train()
+            # mlp.test()
+    else:
+        mlp.train()
+        # mlp.test()
