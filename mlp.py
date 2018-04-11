@@ -16,9 +16,9 @@ import tensorflow as tf
 
 class MultiLayerPerceptron:
 
-    learning_rate = 0.018
+    learning_rate = 0.0018
     epochs = 50
-    batch_size = 64
+    batch_size = 50
 
     def __init__(self, nb_pixels = 4096, nb_classes = 29):
         self.nb_pixels = nb_pixels
@@ -79,11 +79,13 @@ class MultiLayerPerceptron:
     def train(self):
         # Define loss
         logits = self.createGraph()
-        loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=self.outputs))
+        # loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=logits, labels=self.outputs))
+        loss_op = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=logits, labels=self.outputs))
 
         # Setup the optimizer
         # optimizer = tf.train.GradientDescentOptimizer(learning_rate = self.learning_rate)
         optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate)
+        # optimizer = tf.train.MomentumOptimizer(learning_rate=self.learning_rate, momentum = 0.75)
         train_op = optimizer.minimize(loss_op)
 
         # finally setup the initialisation operator
@@ -108,8 +110,16 @@ class MultiLayerPerceptron:
                     # Run optimization op (backprop) and cost op (to get loss value)
                     _, c = sess.run([train_op, loss_op], feed_dict = {self.inputs: batch_inputs, self.outputs: batch_outputs})
                     avg_cost += c / total_batch
+                print("Epoch: ", epoch + 1, "cost = ", "{:.6f}".format(avg_cost))
 
-                print("Epoch: ", epoch + 1, "cost = ", "{:.2f}".format(avg_cost))
+                if epoch != 0 and epoch % 5 == 0 and epoch != self.epochs:
+                    pred = tf.nn.softmax(logits)  # Apply softmax to logits
+                    correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(self.outputs, 1))
+                    # Calculate accuracy
+                    accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float32"))
+                    accuracy = accuracy.eval({self.inputs: self.validation.vectors, self.outputs: self.validation.labels_tensor()})
+                    print("Accuracy:", accuracy)
+
             print("Optimization Finished!")
             # Validation model
             pred = tf.nn.softmax(logits)  # Apply softmax to logits

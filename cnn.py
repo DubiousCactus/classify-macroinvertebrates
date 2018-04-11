@@ -10,7 +10,7 @@
 Convolutional Neural Network
 """
 
-from keras.models import Sequential
+import tensorflow as tf
 
 
 class ConvolutionalNeuralNetwork:
@@ -18,7 +18,7 @@ class ConvolutionalNeuralNetwork:
     learning_rate = 0.01
     epochs = 20
     batch_size = 128
-    dropout = 0.75 # Probability to keep units
+    dropout = 0.4
 
     def __init__(self, width = 256, height = 256, nb_classes = 29, with_dropout = True):
         self.pixels = width * height
@@ -79,7 +79,7 @@ class ConvolutionalNeuralNetwork:
 
 
     # Conv2D wrapper, with bias and relu activation
-    def conv2d(self, x, weights, biases, strides = 1):
+    def conv2d(self, x, weights, biases, strides = 2):
         x = tf.nn.conv2d(x, weights, strides=[1, strides, strides, 1], padding='SAME')
         x = tf.nn.bias_add(x, biases)
 
@@ -93,3 +93,54 @@ class ConvolutionalNeuralNetwork:
 
 
     def train(self):
+         # Because Dropout have different behavior at training and prediction time, we
+        # need to create 2 distinct computation graphs that still share the same weights.
+        logits_train = conv_net(features, num_classes, dropout, reuse=False, is_training=True)
+        logits_test = conv_net(features, num_classes, dropout, reuse=True, is_training=False)
+
+         # Predictions
+        pred_classes = tf.argmax(logits_test, axis=1)
+        pred_probas = tf.nn.softmax(logits_test)
+
+        # If prediction mode, early return
+        if mode == tf.estimator.ModeKeys.PREDICT:
+            return tf.estimator.EstimatorSpec(mode, predictions=pred_classes)
+
+            # Define loss and optimizer
+        loss_op = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
+            logits=logits_train, labels=tf.cast(labels, dtype=tf.int32))
+        ) 
+        optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+        train_op = optimizer.minimize(loss_op, global_step=tf.train.get_global_step())
+
+        # Evaluate the accuracy of the model
+        acc_op = tf.metrics.accuracy(labels=labels, predictions=pred_classes)
+
+        # TF Estimators requires to return a EstimatorSpec, that specify
+        # the different ops for training, evaluating, ...
+        estim_specs = tf.estimator.EstimatorSpec(
+            mode=mode,
+            predictions=pred_classes,
+            loss=loss_op,
+            train_op=train_op,
+            eval_metric_ops={'accuracy': acc_op}
+        )
+
+        # Build the estimator
+        model = tf.estimator.Estimator(estim_specs)
+        # Define the input function for training
+        input_fn = tf.estimator.inputs.numpy_input_fn(
+            x={'images': mnist.train.images}, y=mnist.train.labels,
+            batch_size=batch_size, num_epochs=None, shuffle=True)
+        # Train the Model
+        model.train(input_fn, steps=num_steps)
+
+        # Evaluate the Model
+        # Define the input function for evaluating
+        input_fn = tf.estimator.inputs.numpy_input_fn(
+            x={'images': mnist.test.images}, y=mnist.test.labels,
+            batch_size=batch_size, shuffle=False)
+        # Use the Estimator 'evaluate' method
+        e = model.evaluate(input_fn)
+
+        print("Testing Accuracy:", e['accuracy'])

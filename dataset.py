@@ -18,14 +18,30 @@ class DataSet:
     vectors = []
     labels = []
 
-    def __init__(self, vectors_path, labels_path = None):
+    def __init__(self, vectors_path, labels_path = None, merge_with = None):
         print("[*] Loading dataset '{}'".format(vectors_path))
         self.loadVectors(vectors_path)
+        if merge_with: self.mergeVectors(merge_with)
         if labels_path: self.loadLabels(open(labels_path, "r"))
+        if merge_with: self.mergeLabels()
         self._previous_batch = 0
+
 
     def loadLabels(self, file_):
         self.labels = np.array([int(line) for line in file_])
+
+    
+    def mergeVectors(self, file_path):
+        file_ = open(file_path, 'r')
+        vectors = [np.array(line.split(','), np.float64) for line in file_]
+        vectors = np.transpose(vectors) # Transposed in the file, for some reason...
+        vectors /= vectors.max() # Normalise the data
+        self.vectors = np.concatenate((self.vectors, vectors))
+
+
+    def mergeLabels(self):
+        labels_file = open("datasets/Validate/valLbls.csv", "r")
+        self.labels = np.concatenate((self.labels, np.array([int(line) for line in labels_file])))
 
 
     def loadVectors(self, file_path):
