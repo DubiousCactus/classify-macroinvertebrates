@@ -93,7 +93,7 @@ class ConvolutionalNeuralNetwork:
 
 
     def train(self):
-         # Because Dropout have different behavior at training and prediction time, we
+         # Because Dropout has different behavior at training and prediction time, we
         # need to create 2 distinct computation graphs that still share the same weights.
         logits_train = conv_net(features, num_classes, dropout, reuse=False, is_training=True)
         logits_test = conv_net(features, num_classes, dropout, reuse=True, is_training=False)
