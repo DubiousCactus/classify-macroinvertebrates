@@ -16,9 +16,9 @@ import tensorflow as tf
 
 class MultiLayerPerceptron:
 
-    learning_rate = 0.05
-    epochs = 15
-    batch_size = 30
+    learning_rate = 0.02
+    epochs = 50
+    batch_size = 50
 
     def __init__(self, nb_pixels = 4096, nb_classes = 29):
         self.nb_pixels = nb_pixels
@@ -140,10 +140,8 @@ class MultiLayerPerceptron:
             data = []
             data.append(['ID', 'Label']) # Header
 
-            print(predictions)
             for i, label in enumerate(predictions):
-                print(label)
-                data.append([i + 1, label - 1])
+                data.append([i + 1, label + 1])
 
             output.writerows(data)
 

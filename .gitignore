@@ -1,5 +1,5 @@
 datasets/
 __pycache__/
 *.pyc
-mode.ckpt.*
+model.ckpt.*
 checkpoint
