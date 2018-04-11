@@ -32,7 +32,7 @@ class DataSet:
         file_ = open(file_path, 'r')
         self.vectors = [np.array(line.split(','), np.float64) for line in file_]
         self.vectors = np.transpose(self.vectors) # Transposed in the file, for some reason...
-        self.vectors /= self.vectors.max()
+        self.vectors /= self.vectors.max() # Normalise the data
 
     
     def shuffle(self):

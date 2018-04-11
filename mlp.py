@@ -16,9 +16,9 @@ import tensorflow as tf
 
 class MultiLayerPerceptron:
 
-    learning_rate = 0.02
+    learning_rate = 0.018
     epochs = 50
-    batch_size = 50
+    batch_size = 64
 
     def __init__(self, nb_pixels = 4096, nb_classes = 29):
         self.nb_pixels = nb_pixels
@@ -69,17 +69,17 @@ class MultiLayerPerceptron:
 
             # Feed forward for the current layer
             layer_outputs = tf.add(tf.matmul(previous_layer, self.weights[layer_index]), self.biases[layer_index])
-            # Rectified linear unit activation function
-            # layer_outputs = tf.nn.relu(layer_outputs)
+            layer_outputs = tf.nn.relu(layer_outputs)
+
             self.hidden_outputs[layer_index] = layer_outputs
 
-        return tf.matmul(self.hidden_outputs[-1], self.weights[-1]) + self.biases[-1]
+        return tf.add(tf.matmul(self.hidden_outputs[-1], self.weights[-1]), self.biases[-1])
 
 
     def train(self):
         # Define loss
         logits = self.createGraph()
-        loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=logits, labels=self.outputs))
+        loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=self.outputs))
 
         # Setup the optimizer
         # optimizer = tf.train.GradientDescentOptimizer(learning_rate = self.learning_rate)
@@ -116,7 +116,8 @@ class MultiLayerPerceptron:
             correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(self.outputs, 1))
             # Calculate accuracy
             accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float32"))
-            print("Accuracy:", accuracy.eval({self.inputs: self.validation.vectors, self.outputs: self.validation.labels_tensor()}))
+            accuracy = accuracy.eval({self.inputs: self.validation.vectors, self.outputs: self.validation.labels_tensor()})
+            print("Accuracy:", accuracy)
 
             self.session = sess
             self.logits = logits
@@ -131,11 +132,11 @@ class MultiLayerPerceptron:
             # Testing now
             prediction = tf.argmax(self.logits, 1)
             best = sess.run([prediction], feed_dict={self.inputs: self.testing.vectors})
-            self.exportTest(best[0])
+            self.exportTest(best[0], int(round(accuracy * 100)))
 
 
-    def exportTest(self, predictions):
-        with open('testing.csv', 'w', newline='') as fp:
+    def exportTest(self, predictions, accuracy):
+        with open('testing-{}-percent.csv'.format(accuracy), 'w', newline='') as fp:
             output = csv.writer(fp, delimiter=',')
             data = []
             data.append(['ID', 'Label']) # Header
