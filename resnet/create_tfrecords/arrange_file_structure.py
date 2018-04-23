@@ -15,15 +15,22 @@ import sys
 import shutil
 
 training_set_path = sys.argv[1]
-new_dataset_path = sys.argv[2]
+validation_set_path = sys.argv[2]
+new_training_dataset_path = sys.argv[3]
+new_validation_dataset_path = sys.argv[4]
 
-if not os.path.isdir(new_dataset_path):
-    os.makedirs(new_dataset_path)
+if not os.path.isdir(new_training_dataset_path):
+    os.makedirs(new_training_dataset_path)
+
+if not os.path.isdir(new_validation_dataset_path):
+    os.makedirs(new_validation_dataset_path)
 
 training_labels = open(training_set_path + "/trainLbls.csv", "r")
+validation_labels = open(validation_set_path + "/valLbls.csv", "r")
 
 for index, label in enumerate(training_labels):
-    label_path = new_dataset_path + "/" + label
+    label = label.strip('\n')
+    label_path = new_training_dataset_path + "/" + label
 
     if not os.path.isdir(label_path):
         os.makedirs(label_path)
@@ -33,3 +40,14 @@ for index, label in enumerate(training_labels):
         label_path + "/Image{}.jpg".format(index + 1)
     )
 
+for index, label in enumerate(validation_labels):
+    label = label.strip('\n')
+    label_path = new_validation_dataset_path + "/" + label
+
+    if not os.path.isdir(label_path):
+        os.makedirs(label_path)
+
+    shutil.copyfile(
+        validation_set_path + "/ValidationImages/Image{}.jpg".format(index + 1),
+        label_path + "/Image{}.jpg".format(index + 1)
+    )
