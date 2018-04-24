@@ -12,19 +12,35 @@ Data set
 
 import numpy as np
 
+from os import listdir
+from os.path import isfile, join
+
 
 class DataSet:
 
     vectors = []
+    images_paths = {}
     labels = []
 
-    def __init__(self, vectors_path, labels_path = None, merge_with = None):
-        print("[*] Loading dataset '{}'".format(vectors_path))
-        self.loadVectors(vectors_path)
-        if merge_with: self.mergeVectors(merge_with)
+    def __init__(self, vectors_path, images_path = None, labels_path = None, merge_with = None):
+        if vectors_path is not None:
+            print("[*] Loading dataset '{}'".format(vectors_path))
+            self.loadVectors(vectors_path)
+            if merge_with: self.mergeVectors(merge_with)
+
+        if images_path is not None:
+            print("[*] Loading images in '{}'".format(images_path))
+            self.loadImages(images_path)
+
         if labels_path: self.loadLabels(open(labels_path, "r"))
         if merge_with: self.mergeLabels()
         self._previous_batch = 0
+
+
+    def loadImages(self, folder_path):
+        for img in listdir(folder_path):
+            if isfile(join(folder_path, img)):
+                self.images_paths[img.split('.jpg')[0][5:]] = folder_path + '/' + img
 
 
     def loadLabels(self, file_):

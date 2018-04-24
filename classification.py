@@ -15,11 +15,13 @@ import tensorflow as tf
 
 from mlp import MultiLayerPerceptron
 from svm import SupportVectorMachine
+from sift_svm import SIFT_SupportVectorMachine
 from dataset import DataSet
 
 if __name__ == "__main__":
     # mlp = MultiLayerPerceptron()
-    # mlp.epochs = 60
+    # mlp.epochs = 100
+    # mlp.batch_size = 60
     # mlp.addLayer(2048)
     # mlp.addLayer(1024)
     # # mlp.addLayer(256)
@@ -46,13 +48,21 @@ if __name__ == "__main__":
             # # mlp.test()
     # else:
         # mlp.train()
-        # mlp.test()
+    #     mlp.test()
 
-    svm = SupportVectorMachine()
-    svm.setInputs(
-        DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
-        DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
-        DataSet("datasets/Test/testVectors.csv")
+    # svm = SupportVectorMachine()
+    # svm.setInputs(
+        # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
+        # DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
+        # DataSet("datasets/Test/testVectors.csv")
+    # )
+    # svm.train()
+    # svm.test()
+
+    SIFT_SVM = SIFT_SupportVectorMachine()
+    SIFT_SVM.setInputs(
+        DataSet(vectors_path=None, images_path="datasets/Train/TrainImages/", labels_path="datasets/Train/trainLbls.csv"),
+        DataSet(vectors_path=None, images_path="datasets/Validate/ValidationImages", labels_path="datasets/Validate/valLbls.csv"),
+        DataSet(vectors_path=None, images_path="datasets/Test/TestImages")
     )
-    svm.train()
-    svm.test()
+    SIFT_SVM.train()
