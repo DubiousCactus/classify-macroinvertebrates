@@ -16,9 +16,9 @@ import tensorflow as tf
 
 class MultiLayerPerceptron:
 
-    learning_rate = 0.001
+    learning_rate = 0.0018
     epochs = 50
-    batch_size = 30
+    batch_size = 50
 
     def __init__(self, nb_pixels = 4096, nb_classes = 29):
         self.nb_pixels = nb_pixels
@@ -164,4 +164,3 @@ class MultiLayerPerceptron:
         # Testing now
         prediction = tf.argmax(self.logits, 1)
         best = session.run([prediction], feed_dict={self.inputs: self.testing.vectors})
-        print(best)
