@@ -15,6 +15,7 @@ import tensorflow as tf
 
 from mlp import MultiLayerPerceptron
 from svm import SupportVectorMachine
+from sift_svm import SIFT_SupportVectorMachine
 from dataset import DataSet
 
 if __name__ == "__main__":
@@ -33,18 +34,18 @@ if __name__ == "__main__":
         usr_input = 'n'
         usr_input = input("Restore model? [y/N]: ")
 
-        if usr_input.lower() == 'y':
-            # Restore variables from disk.
-            saver = tf.train.Saver()
-            sess = tf.Session()
-            saver.restore(sess, "model.ckpt")
-            print("Model restored.")
-            # mlp.test(sess)
-        else:
-            mlp.train()
-            # mlp.test()
-    else:
-        mlp.train()
+        # if usr_input.lower() == 'y':
+            # # Restore variables from disk.
+            # saver = tf.train.Saver()
+            # sess = tf.Session()
+            # saver.restore(sess, "model.ckpt")
+            # print("Model restored.")
+            # # mlp.test(sess)
+        # else:
+            # mlp.train()
+            # # mlp.test()
+    # else:
+        # mlp.train()
         # mlp.test()
 
     # svm = SupportVectorMachine()
@@ -56,3 +57,11 @@ if __name__ == "__main__":
     # )
     # svm.train()
     # svm.test()
+
+    SIFT_SVM = SIFT_SupportVectorMachine()
+    SIFT_SVM.setInputs(
+        DataSet(vectors_path=None, images_path="datasets/Train/TrainImages/", labels_path="datasets/Train/trainLbls.csv"),
+        DataSet(vectors_path=None, images_path="datasets/Validate/ValidationImages", labels_path="datasets/Validate/valLbls.csv"),
+        DataSet(vectors_path=None, images_path="datasets/Test/TestImages")
+    )
+    SIFT_SVM.train()

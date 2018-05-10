@@ -110,7 +110,7 @@ class MultiLayerPerceptron:
                     # Run optimization op (backprop) and cost op (to get loss value)
                     _, c = sess.run([train_op, loss_op], feed_dict = {self.inputs: batch_inputs, self.outputs: batch_outputs})
                     avg_cost += c / total_batch
-                print("Epoch: ", epoch + 1, "cost = ", "{:.9f}".format(avg_cost))
+                print("Epoch: ", epoch + 1, "cost = ", "{:.12f}".format(avg_cost))
 
                 if epoch != 0 and epoch % 5 == 0 and epoch != self.epochs:
                     pred = tf.nn.softmax(logits)  # Apply softmax to logits
