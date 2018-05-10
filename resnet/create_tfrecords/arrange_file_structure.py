@@ -16,8 +16,8 @@ import shutil
 
 training_set_path = sys.argv[1]
 validation_set_path = sys.argv[2]
-new_training_dataset_path = sys.argv[3]
-new_validation_dataset_path = sys.argv[4]
+new_training_dataset_path = sys.argv[3] + '/micro_invertebrae/micro_invertebrae_photos'
+new_validation_dataset_path = sys.argv[4] + '/micro_invertebrae/micro_invertebrae_photos'
 
 if not os.path.isdir(new_training_dataset_path):
     os.makedirs(new_training_dataset_path)

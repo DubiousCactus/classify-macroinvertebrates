@@ -1,0 +1,6 @@
+tf_train
+tf_validate
+log/
+__pycache__/
+create_tfrecords/__pycache__/
+*.ckpt

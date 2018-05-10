@@ -7,3 +7,6 @@ testing*.csv
 resnet/model.*
 resnet/checkpoint
 resnet/micro-invertebrae
+resnet/tf_validate
+resnet/tf_train
+*.tfrecord

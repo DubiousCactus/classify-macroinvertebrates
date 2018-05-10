@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import random
 import tensorflow as tf
 from dataset_utils import _dataset_exists, _get_filenames_and_classes, write_label_file, _convert_dataset
@@ -36,29 +38,36 @@ def main():
         raise ValueError('validation_dataset_dir is empty. Please state a validation_dataset_dir argument.')
 
     #If the TFRecord files already exist in the directory, then exit without creating the files again
-    if _dataset_exists(training_dataset_dir = FLAGS.training_dataset_dir, _NUM_SHARDS = FLAGS.num_shards, output_filename = FLAGS.tfrecord_filename):
+    if _dataset_exists(dataset_dir = FLAGS.training_dataset_dir, _NUM_SHARDS = FLAGS.num_shards, output_filename = FLAGS.tfrecord_filename):
         print('Dataset files already exist. Exiting without re-creating them.')
         return None
     #==============================================================END OF CHECKS===================================================================
 
     #Get a list of photo_filenames like ['123.jpg', '456.jpg'...] and a list of sorted class names from parsing the subdirectories.
-    training_filenames, class_names = _get_filenames_and_classes(FLAGS.training_dataset_dir)
+    training_filenames, training_class_names = _get_filenames_and_classes(FLAGS.training_dataset_dir)
 
     #Get a list of photo_filenames like ['123.jpg', '456.jpg'...] and a list of sorted class names from parsing the subdirectories.
-    validation_filenames, class_names = _get_filenames_and_classes(FLAGS.validation_dataset_dir)
+    validation_filenames, validation_class_names = _get_filenames_and_classes(FLAGS.validation_dataset_dir)
 
     #Refer each of the class name to a specific integer number for predictions later
-    class_names_to_ids = dict(zip(class_names, range(len(class_names))))
+    training_class_names_to_ids = dict(zip(training_class_names, range(len(training_class_names))))
+
+    #Refer each of the class name to a specific integer number for predictions later
+    validation_class_names_to_ids = dict(zip(validation_class_names, range(len(validation_class_names))))
 
     # First, convert the training and validation sets.
-    _convert_dataset('train', training_filenames, class_names_to_ids,
-                     dataset_dir = FLAGS.dataset_dir, tfrecord_filename = FLAGS.tfrecord_filename, _NUM_SHARDS = FLAGS.num_shards)
-    _convert_dataset('validation', validation_filenames, class_names_to_ids,
-                     dataset_dir = FLAGS.dataset_dir, tfrecord_filename = FLAGS.tfrecord_filename, _NUM_SHARDS = FLAGS.num_shards)
+    _convert_dataset('train', training_filenames, training_class_names_to_ids,
+                     dataset_dir = FLAGS.training_dataset_dir, tfrecord_filename = FLAGS.tfrecord_filename, _NUM_SHARDS = FLAGS.num_shards)
+    _convert_dataset('validation', validation_filenames, validation_class_names_to_ids,
+                     dataset_dir = FLAGS.validation_dataset_dir, tfrecord_filename = FLAGS.tfrecord_filename, _NUM_SHARDS = FLAGS.num_shards)
 
     # Finally, write the labels file:
-    labels_to_class_names = dict(zip(range(len(class_names)), class_names))
-    write_label_file(labels_to_class_names, FLAGS.dataset_dir)
+    labels_to_class_names = dict(zip(list(map(int, training_class_names)), training_class_names))
+    write_label_file(labels_to_class_names, FLAGS.training_dataset_dir)
+
+    # Finally, write the labels file:
+    labels_to_class_names = dict(zip(list(map(int, validation_class_names)), validation_class_names))
+    write_label_file(labels_to_class_names, FLAGS.validation_dataset_dir)
 
     print('\nFinished converting the %s dataset!' % (FLAGS.tfrecord_filename))
 
