@@ -58,19 +58,24 @@ class SIFT_SupportVectorMachine:
     def clusterFeatures(self):
         print("[*] Clustering feature descriptors...")
         # Concatenate training feature descriptors
-        print(self.training_descriptors)
-        feature_descriptors = self.training_descriptors.items()
+        feature_descriptors = []
+        for image_descriptors in list(self.training_descriptors.item().values()):
+            if image_descriptors is None: continue # Why are some of them None??
+            for image_descriptor in image_descriptors:
+                feature_descriptors.append(image_descriptor)
+
+        print("\t-> Running K-Means with K={}".format(self.n_clusters))
         kmeans = cluster.KMeans(n_clusters =
-                                self.n_clusters).fit(feature_descriptors)
+                                self.n_clusters, n_jobs=-1).fit(feature_descriptors)
         print("[*] Creating histograms...")
+        histograms = {}
         for index, image in self.training.images_paths.items():
-            clusters = kmeans.predict(self.training_descriptors[index])
-            printf("[INFO] Image {} cluster associations:".format(index))
-            printf(clusters[0])
             # For each descriptor of the current image
-            for descriptor in self.training_descriptors[index]:
-                print(clusters.predict(descriptor))
-            break
+            histograms[index] = np.zeros(self.n_clusters)
+            for descriptor in self.training_descriptors.item()[index]:
+                prediction = kmeans.predict(descriptor)
+                print(prediction)
+                histograms[index][prediction] += 1
 
 
     def loadFeatures(self, path):
