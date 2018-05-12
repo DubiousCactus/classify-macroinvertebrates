@@ -14,7 +14,7 @@ import tensorflow as tf
 
 
 class ConvolutionalNeuralNetwork:
-    
+
     learning_rate = 0.01
     epochs = 20
     batch_size = 128
@@ -61,7 +61,7 @@ class ConvolutionalNeuralNetwork:
         conv2 = maxpool2d(conv2, k=2)
 
         # Reshape the convolution layer to fit the fully connected layer's input
-        fully_connected = tf.reshape(conv2, [-1, self.weights['wf1'].get_shape().as_list()[0])
+        fully_connected = tf.reshape(conv2, [-1, self.weights['wf1'].get_shape().as_list()[0]])
         fully_connected = tf.add(tf.matmul(fully_connected, self.weights['wf1']), self.biases['bf1'])
         # Apply rectified linear unit activation function
         fully_connected = tf.nn.relu(fully_connected)
