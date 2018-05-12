@@ -11,7 +11,6 @@ Main class
 """
 
 import os
-import tensorflow as tf
 
 from mlp import MultiLayerPerceptron
 from svm import SupportVectorMachine
@@ -19,20 +18,20 @@ from sift_svm import SIFT_SupportVectorMachine
 from dataset import DataSet
 
 if __name__ == "__main__":
-    mlp = MultiLayerPerceptron()
-    mlp.epochs = 100
-    mlp.addLayer(2048)
-    mlp.addLayer(1024)
-    mlp.setInputs(
-        DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv", merge_with="datasets/Validate/valVectors.csv"),
-        # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
-        DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
-        DataSet("datasets/Test/testVectors.csv")
-    )
+    # mlp = MultiLayerPerceptron()
+#     mlp.epochs = 100
+    # mlp.addLayer(2048)
+    # mlp.addLayer(1024)
+    # mlp.setInputs(
+        # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv", merge_with="datasets/Validate/valVectors.csv"),
+        # # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
+        # DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
+        # DataSet("datasets/Test/testVectors.csv")
+    # )
 
-    if os.path.isfile("model.ckpt.index"):
-        usr_input = 'n'
-        usr_input = input("Restore model? [y/N]: ")
+    # if os.path.isfile("model.ckpt.index"):
+        # usr_input = 'n'
+        # usr_input = input("Restore model? [y/N]: ")
 
         # if usr_input.lower() == 'y':
             # # Restore variables from disk.

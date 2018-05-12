@@ -66,6 +66,7 @@ batch_size = 3
 initial_learning_rate = 0.0001
 learning_rate_decay_factor = 0.75
 num_epochs_before_decay = 2
+==== BASE ====
 
 #============== DATASET LOADING ======================
 #We now create a function that creates a Dataset class which will give us many TFRecord files to feed in the examples into a queue in parallel.
