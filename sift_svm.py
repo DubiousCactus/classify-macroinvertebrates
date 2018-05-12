@@ -66,7 +66,10 @@ class SIFT_SupportVectorMachine:
         for index, image in self.training.images_paths.items():
             clusters = kmeans.predict(self.training_descriptors[index])
             printf("[INFO] Image {} cluster associations:".format(index))
-            printf(clusters)
+            printf(clusters[0])
+            # For each descriptor of the current image
+            for descriptor in self.training_descriptors[index]:
+                print(clusters.predict(descriptor))
             break
 
 

@@ -46,7 +46,7 @@ class DataSet:
     def loadLabels(self, file_):
         self.labels = np.array([int(line) for line in file_])
 
-    
+
     def mergeVectors(self, file_path):
         file_ = open(file_path, 'r')
         vectors = [np.array(line.split(','), np.float64) for line in file_]
@@ -66,7 +66,7 @@ class DataSet:
         self.vectors = np.transpose(self.vectors) # Transposed in the file, for some reason...
         self.vectors /= self.vectors.max() # Normalise the data
 
-    
+
     def shuffle(self):
         assert len(self.vectors) == len(self.labels)
         perm = np.random.permutation(len(self.vectors))
