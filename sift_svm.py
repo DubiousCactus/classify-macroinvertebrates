@@ -16,6 +16,7 @@ import random
 import numpy as np
 
 from sklearn import svm, cluster
+from sklearn.externals import joblib
 
 
 class SIFT_SupportVectorMachine:
@@ -26,6 +27,8 @@ class SIFT_SupportVectorMachine:
         self.training_descriptors = {}
         self.validation_descriptors = {}
         self.testing_descriptors = {}
+        self.training_histograms = {}
+        self.validation_histograms = {}
         self.n_clusters = K
 
 
@@ -55,27 +58,92 @@ class SIFT_SupportVectorMachine:
         np.save('sift_features/{}.npy'.format(name), descriptors)
 
 
+    def createHistograms(self, dataset, descriptors, cluster):
+        histograms = {}
+        labels = []
+        for index, image in sorted(dataset.images_paths.items()):
+            # For each descriptor of the current image
+            histograms[index] = np.zeros(self.n_clusters)
+            # Hopefully the labels order will be the same as the images
+            # order... Or will it...
+            labels.append(dataset.labels[index])
+            if descriptors[index] is None: continue
+            for descriptor in descriptors[index]:
+                prediction = cluster.predict([descriptor])
+                histograms[index][prediction] += 1
+
+        return (histograms, labels)
+
+
     def clusterFeatures(self):
         print("[*] Clustering feature descriptors...")
         # Concatenate training feature descriptors
         feature_descriptors = []
+        # Use .item() when loading the features from npy files
+        # but not when they're in the RAM already
         for image_descriptors in list(self.training_descriptors.item().values()):
             if image_descriptors is None: continue # Why are some of them None??
             for image_descriptor in image_descriptors:
                 feature_descriptors.append(image_descriptor)
 
-        print("\t-> Running K-Means with K={}".format(self.n_clusters))
-        kmeans = cluster.KMeans(n_clusters =
-                                self.n_clusters, n_jobs=-1).fit(feature_descriptors)
-        print("[*] Creating histograms...")
-        histograms = {}
-        for index, image in self.training.images_paths.items():
-            # For each descriptor of the current image
-            histograms[index] = np.zeros(self.n_clusters)
-            for descriptor in self.training_descriptors.item()[index]:
-                prediction = kmeans.predict(descriptor)
-                print(prediction)
-                histograms[index][prediction] += 1
+        filename = "kmeans_classifier.pkl"
+        if os.path.isfile(filename):
+            print("\t-> Restoring K-Means classifier from '{}'".format(filename))
+            kmeans = joblib.load(filename)
+        else:
+            print("\t-> Running K-Means with K={}".format(self.n_clusters))
+            kmeans = cluster.KMeans(n_clusters =
+                                    self.n_clusters, n_jobs=-1).fit(feature_descriptors)
+            print("[*] Saving classifier as '{}'...".format(filename))
+            _ = joblib.dump(kmeans, filename, compress=9)
+
+        if os.path.isdir('histograms'):
+            print("[*] Restoring histograms from '{}'".format('histograms/'))
+            self.training_histograms = np.load('histograms/training_histograms.npy')
+            self.training_histograms_labels = np.load('histograms/training_labels.npy')
+            self.validation_histograms = np.load('histograms/validation_histograms.npy')
+            self.validation_histograms_labels = np.load('histograms/validation_labels.npy')
+        else:
+            os.mkdir('histograms')
+            print("[*] Creating histograms...")
+            print("\t-> Training samples")
+            hist, labels = self.createHistograms(
+                self.training,
+                self.training_descriptors.item(),
+                kmeans
+            )
+            self.training_histograms = hist
+            self.training_histograms_labels = labels
+            np.save('histograms/training_histograms.npy', self.training_histograms)
+            np.save('histograms/training_labels.npy', self.training_histograms_labels)
+
+            print("\t-> Validation samples")
+            hist, labels = self.createHistograms(
+                self.validation,
+                self.validation_descriptors.item(),
+                kmeans
+            )
+            self.validation_histograms = hist
+            self.validation_histograms_labels = labels
+            np.save('histograms/validation_histograms.npy', self.validation_histograms)
+            np.save('histograms/validation_labels.npy', self.validation_histograms_labels)
+
+
+    # Return the max amount of features per image and the approximate amount of features per image
+    def featuresPerImage(self):
+        totalFeaturesInTraining = 0
+        maxFeaturesInTraining = 0
+        nbImages = 0
+        for image_descriptors in list(self.training_descriptors.item().values()):
+            if image_descriptors is None: continue
+            totalFeaturesInTraining += len(image_descriptors)
+            if len(image_descriptors) > maxFeaturesInTraining:
+                maxFeaturesInTraining = len(image_descriptors)
+            nbImages += 1
+
+        return (
+            maxFeaturesInTraining, round(totalFeaturesInTraining / nbImages)
+        )
 
 
     def loadFeatures(self, path):
@@ -83,6 +151,9 @@ class SIFT_SupportVectorMachine:
         self.training_descriptors = np.load(path + 'training_descriptors.npy')
         self.validation_descriptors = np.load(path + 'validation_descriptors.npy')
         self.testing_descriptors = np.load(path + 'testing_descriptors.npy')
+        maxFeatures, avrgFeatures = self.featuresPerImage()
+        print("[*] Approx. SIFT features per image: {}".format(avrgFeatures))
+        print("[*] Max SIFT features per image: {}".format(maxFeatures))
 
 
     def extractAndSaveFeatures(self):
@@ -107,3 +178,33 @@ class SIFT_SupportVectorMachine:
             self.extractAndSaveFeatures()
 
         self.clusterFeatures()
+        # print("[*] Shuffling training histograms...")
+        # self.training_descriptors.shuffle()
+        print("[*] Fitting the Support Vector Machine...")
+        self.model.fit(list(self.training_histograms.item().values()),
+                       self.training_histograms_labels)
+        print(len(self.training_histograms_labels))
+        print(len(self.training_histograms.item().values()))
+        print(len(self.validation_histograms_labels))
+        print(len(self.validation_histograms.item().values()))
+        print("[*] Classification score: {:.6f}%".format(
+            self.model.score(list(self.validation_histograms.item().values()),
+                             self.validation_histograms_labels) * 100)
+        )
+
+
+    def test(self):
+        print("[*] Classifying test samples...")
+
+
+
+    def exportTest(self, predictions):
+        with open('testing-SIFT_SVM.csv', 'w', newline='') as fp:
+            output = csv.writer(fp, delimiter=',')
+            data = []
+            data.append(['ID', 'Label'])  # Header
+
+            for i, label in enumerate(predictions):
+                data.append([i + 1, label])
+
+            output.writerows(data)

@@ -18,11 +18,12 @@ from os.path import isfile, join
 
 class DataSet:
 
-    vectors = []
-    images_paths = {}
-    labels = []
 
     def __init__(self, vectors_path, images_path = None, labels_path = None, merge_with = None):
+        self.vectors = []
+        self.images_paths = {}
+        self.labels = []
+
         if vectors_path is not None:
             print("[*] Loading dataset '{}'".format(vectors_path))
             self.loadVectors(vectors_path)
@@ -40,7 +41,7 @@ class DataSet:
     def loadImages(self, folder_path):
         for img in listdir(folder_path):
             if isfile(join(folder_path, img)):
-                self.images_paths[img.split('.jpg')[0][5:]] = folder_path + '/' + img
+                self.images_paths[int(img.split('.jpg')[0][5:]) - 1] = folder_path + '/' + img
 
 
     def loadLabels(self, file_):

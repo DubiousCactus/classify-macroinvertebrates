@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     SIFT_SVM = SIFT_SupportVectorMachine()
     SIFT_SVM.setInputs(
-        DataSet(vectors_path=None, images_path="datasets/Train/TrainImages/", labels_path="datasets/Train/trainLbls.csv"),
+        DataSet(vectors_path=None, images_path="datasets/Train/TrainImages", labels_path="datasets/Train/trainLbls.csv"),
         DataSet(vectors_path=None, images_path="datasets/Validate/ValidationImages", labels_path="datasets/Validate/valLbls.csv"),
         DataSet(vectors_path=None, images_path="datasets/Test/TestImages")
     )

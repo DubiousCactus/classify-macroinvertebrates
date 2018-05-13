@@ -22,10 +22,12 @@ class SupportVectorMachine:
         # self.model = svm.SVC(probability=False, kernel='linear', C=19, gamma=.008195)
         # self.model = svm.SVC(kernel='linear', C=0.98999)
 
+
     def setInputs(self, training, validation, testing):
         self.training = training
         self.validation = validation
         self.testing = testing
+
 
     def train(self):
         print("[*] Shuffling training samples...")
@@ -36,9 +38,12 @@ class SupportVectorMachine:
             self.model.score(self.validation.vectors, self.validation.labels) * 100)
         )
 
+
     def test(self):
+        print("[*] Classifying test samples...")
         predictions = self.model.predict(self.testing.vectors)
         self.exportTest(predictions)
+
 
     def exportTest(self, predictions):
         with open('testing-SVM.csv', 'w', newline='') as fp:
