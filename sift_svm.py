@@ -21,7 +21,7 @@ from sklearn.externals import joblib
 
 class SIFT_SupportVectorMachine:
 
-    def __init__(self, K = 80):
+    def __init__(self, K = 200):
         random.seed()
         self.model = svm.SVC(probability=False, kernel='rbf', C=19, gamma=.0082)
         self.training_descriptors = {}
@@ -29,6 +29,7 @@ class SIFT_SupportVectorMachine:
         self.testing_descriptors = {}
         self.training_histograms = {}
         self.validation_histograms = {}
+        self.kmeans = None
         self.n_clusters = K
 
 
@@ -89,13 +90,13 @@ class SIFT_SupportVectorMachine:
         filename = "kmeans_classifier.pkl"
         if os.path.isfile(filename):
             print("\t-> Restoring K-Means classifier from '{}'".format(filename))
-            kmeans = joblib.load(filename)
+            self.kmeans = joblib.load(filename)
         else:
             print("\t-> Running K-Means with K={}".format(self.n_clusters))
-            kmeans = cluster.KMeans(n_clusters =
+            self.kmeans = cluster.KMeans(n_clusters =
                                     self.n_clusters, n_jobs=-1).fit(feature_descriptors)
             print("[*] Saving classifier as '{}'...".format(filename))
-            _ = joblib.dump(kmeans, filename, compress=9)
+            _ = joblib.dump(self.kmeans, filename, compress=9)
 
         if os.path.isdir('histograms'):
             print("[*] Restoring histograms from '{}'".format('histograms/'))
@@ -110,7 +111,7 @@ class SIFT_SupportVectorMachine:
             hist, labels = self.createHistograms(
                 self.training,
                 self.training_descriptors.item(),
-                kmeans
+                self.kmeans
             )
             self.training_histograms = hist
             self.training_histograms_labels = labels
@@ -121,7 +122,7 @@ class SIFT_SupportVectorMachine:
             hist, labels = self.createHistograms(
                 self.validation,
                 self.validation_descriptors.item(),
-                kmeans
+                self.kmeans
             )
             self.validation_histograms = hist
             self.validation_histograms_labels = labels
@@ -183,10 +184,6 @@ class SIFT_SupportVectorMachine:
         print("[*] Fitting the Support Vector Machine...")
         self.model.fit(list(self.training_histograms.item().values()),
                        self.training_histograms_labels)
-        print(len(self.training_histograms_labels))
-        print(len(self.training_histograms.item().values()))
-        print(len(self.validation_histograms_labels))
-        print(len(self.validation_histograms.item().values()))
         print("[*] Classification score: {:.6f}%".format(
             self.model.score(list(self.validation_histograms.item().values()),
                              self.validation_histograms_labels) * 100)
@@ -195,6 +192,10 @@ class SIFT_SupportVectorMachine:
 
     def test(self):
         print("[*] Classifying test samples...")
+        testing_histograms, testing_labels = self.createHistograms(self.testing, self.testing_descriptors, self.kmeans)
+        predictions = self.model.predict(list(self.testing_histograms.values()),
+                           testing_labels)
+        self.exportTest(predictions)
 
 
 

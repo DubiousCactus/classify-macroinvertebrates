@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1526230005 "conference_041818.tex" "conference_041818.pdf" "conference_041818" 1526230005
+["pdflatex"] 1526252230 "conference_041818.tex" "conference_041818.pdf" "conference_041818" 1526252230
   "/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1520157250 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1520157216 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1520157222 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -87,8 +87,8 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1525038665 2565685 1f907097ec2b6d0e87a435aad9a0b283 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1520332100 7738160 4cf1cb21f5265c660d145f0679e90847 ""
   "IEEEtran.cls" 1440632924 288304 b67b6fc6c2abb39f9b461923f5199343 ""
-  "conference_041818.aux" 1526229960 2096 d484cb349b5d07d0bb71a5db7ab5d517 ""
-  "conference_041818.tex" 1526230004 14228 19235c7c78fa2dd63ffa98a2ba025f64 ""
+  "conference_041818.aux" 1526252192 2180 393985ba4546cfa8390b829af9b9894d ""
+  "conference_041818.tex" 1526252228 17084 3527e25aa5f1cf1bfe6230a3415db12a ""
   "fig1.png" 0 -1 0 ""
   (generated)
   "conference_041818.aux"
