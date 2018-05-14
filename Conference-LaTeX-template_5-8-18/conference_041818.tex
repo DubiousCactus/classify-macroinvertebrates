@@ -19,8 +19,8 @@ of Engineering at Aarhus University}
 
 \author{\IEEEauthorblockN{Th\'{e}o Morales}
 \IEEEauthorblockA{\textit{MSc. Student of Computer Engineering} \\
-\textit{Department of Engineering, Aarhus University}\\
-Aarhus, Denmark \\
+\textit{Faculty of Science and Technology, Department of Engineering}\\
+Aarhus University, Denmark \\
 theo.martin.morales@post.au.dk}
 }
 
@@ -80,98 +80,58 @@ Concerning the Convolutional Neural Networks approach, a few more things have to
 As stated above, \emph{Dataset Augmentation} is a process that is only applied to images used for a Convolutional Neural Network training phase, because it is the classifier that takes the most advantage of the three color channels of an image. It is only useful to augment the \emph{Training} sample images, since those are the only ones that will help the classifier to learn.
 The \emph{Python} script provided by \emph{Tensorflow} for \emph{Inception Resnet v2} tales care of distorting images in order to augment the data set, to ultimately make the network invariant to aspects of the image that do not effect the label. Since the aspect ratio is not respected, and since the resizing method changes depending on the running thread number, the resizing operation may distort the images in a first place. Secondly, each image is randomly flipped horizontally. Finally, the colors are randomly distorted in four different ways.
 
-\section{Prepare Your Paper Before Styling}
-Before you begin to format your paper, first write and save the content as a 
-separate text file. Complete all content and organizational editing before 
-formatting. Please note sections \ref{AA}--\ref{SCM} below for more information on 
-proofreading, spelling and grammar.
+\section{Methods and algorithms}
+Classifying images of such similar shapes can be a difficult task to solve as a machine learning problem, and that is why several algorithms and methods must be applied on the same dataset in order to have a certain order of comparison to be able to conclude useful deductions.
+Finding the right method to properly classify the dataset is the ultimate goal, but before simply going for the state-of-the-art CNN, it is best to study the well known methods and understand why one performs better than an other, in an attempt to apply the best possible approach.
 
-Keep your text and graphic files separate until after the text has been 
-formatted and styled. Do not number text heads---{\LaTeX} will do that 
-for you.
-
-\subsection{Abbreviations and Acronyms}\label{AA}
-Define abbreviations and acronyms the first time they are used in the text, 
-even after they have been defined in the abstract. Abbreviations such as 
-IEEE, SI, MKS, CGS, ac, dc, and rms do not have to be defined. Do not use 
-abbreviations in the title or heads unless they are unavoidable.
-
-\subsection{Units}
+The following algorithms have been applied and compared against each other:
 \begin{itemize}
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
-\item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
+    \item \textbf{Multi Layer Perceptron Neural Network}
+    \item \textbf{Pre-Trained Convolutional Neural Network}
+    \item \textbf{Support Vector Machine with Bag Of Features}
+    \item \textbf{Nearest Neighbour with Bag Of Features}
 \end{itemize}
 
-\subsection{Equations}
-Number equations consecutively. To make your 
-equations more compact, you may use the solidus (~/~), the exp function, or 
-appropriate exponents. Italicize Roman symbols for quantities and variables, 
-but not Greek symbols. Use a long dash rather than a hyphen for a minus 
-sign. Punctuate equations with commas or periods when they are part of a 
-sentence, as in:
-\begin{equation}
-a+b=\gamma\label{eq}
-\end{equation}
+Those algorithms were implemented in \emph{Python 3}, with the help of the great libraries \emph{Tensorflow} and \emph{OpenCV}. In the following section, they will be presented and explained thoroughly, after what their results will be compared on the same basis. \emph{Note that the given accuracy corresponds to the validation accuracy, and that it may vary if measured on the test dataset.}
 
-Be sure that the 
-symbols in your equation have been defined before or immediately following 
-the equation. Use ``\eqref{eq}'', not ``Eq.~\eqref{eq}'' or ``equation \eqref{eq}'', except at 
-the beginning of a sentence: ``Equation \eqref{eq} is . . .''
+\subsection{Multi Layer Perceptron Neural Network}
+    Famously known for being able to optimize a large range of cost functions, the MLP Neural Network does not need to be presented. The thing that makes it a very good candidate against the convolutional type is its fully-connected architecture, that is part of the actual CNN architecture as being the last "step".
+Since the feature vectors provided in the dataset were produced by a CNN, it should be intuitive to think that feeding those into an independent MLP would produce rather similar results, and that is why it can be assumed that both scores should be close to each other.
 
-\subsection{\LaTeX-Specific Advice}
+The MLP has been trained from scratch using different architecures for the hidden layers, and with two different optimizers: \emph{Adam} and \emph{Stochastic Gradient Descent}, both with similar learning rates. Different results can be observed after tinkering with the hyperparameters, before optaining what is to be considered the optimal configuration for the last row of the table:
 
-Please use ``soft'' (e.g., \verb|\eqref{Eq}|) cross references instead
-of ``hard'' references (e.g., \verb|(1)|). That will make it possible
-to combine sections, add equations, or change the order of figures or
-citations without having to go through the file line by line.
+\begin{table}[htbp]
+\caption{Multi Layer Perceptron: \\ Hyperparameters and Configurations}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Hyperparameters}}&\textbf{Final} \\
+\cline{1-3} 
+\textbf{\textit{Hidden Neurons}}& \textbf{\textit{Learn. Rate}}& \textbf{\textit{Batch Size}} & \textbf{\textit{Accuracy}} \\
+\hline
+2048:1024& 0.0018 & 50 & 72\% \\
+\hline
+\end{tabular}
+\label{tab1}
+\end{center}
+\end{table}
 
-Please don't use the \verb|{eqnarray}| equation environment. Use
-\verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
-environment leaves unsightly spaces around relation symbols.
 
-Please note that the \verb|{subequations}| environment in {\LaTeX}
-will increment the main equation counter even when there are no
-equation numbers displayed. If you forget that, you might write an
-article in which the equation numbers skip from (17) to (20), causing
-the copy editors to wonder if you've discovered a new method of
-counting.
+\subsection{Pre-Trained Convolutional Neural Network}
+    As previously explained, using a pre-trained Convolutional Neural Network has the big advantage of providing well-performing convolution layers, which play the biggest part in image classification for such a type of neural network.
+The chosen CNN is \emph{Inception Resnet V2}, that is part of \emph{Tensorflow-slim}'s research architectures and one of the top performing CNNs out there, according to [INSERT REF TO GITHUB REPO PLEASE].
 
-{\BibTeX} does not work by magic. It doesn't get the bibliographic
-data from thin air but from .bib files. If you use {\BibTeX} to produce a
-bibliography you must send the .bib files. 
+A checkpoint of that network, containing all the weights and biases, was downloaded and used to transfer the learning of the model, by keeping the convolution layers's weights but dropping the fully-connected layers's ones, in order to fine-tune the network with the macroinvertebrates dataset.
+This was done fairly easily thanks to the good usability of the framework, and as stated above, a pre-processing script is provided for the images to be fitted into the network's input configuration.
 
-{\LaTeX} can't read your mind. If you assign the same label to a
-subsubsection and a table, you might find that Table I has been cross
-referenced as Table IV-B3. 
+This method is allegedly the best in the field, and if used well, can yield impressive results of accuracy above 95\%. However, since the computation of such network (especially on a large model like \emph{Inception}) is very slow and requires a recent GPU with CUDA capabilities, it has been hard to obtain decent results that would support the theory.
 
-{\LaTeX} does not have precognitive abilities. If you put a
-\verb|\label| command before the command that updates the counter it's
-supposed to be using, the label will pick up the last counter to be
-cross referenced instead. In particular, a \verb|\label| command
-should not go before the caption of a figure or a table.
+\subsection{Support Vector Machine with Bag Of Features}
 
-Do not use \verb|\nonumber| inside the \verb|{array}| environment. It
-will not stop equation numbers inside \verb|{array}| (there won't be
-any anyway) and it might stop a wanted equation number in the
-surrounding equation.
+\subsection{Nearest Neighbour with Bag Of Features}
+
 
 \subsection{Some Common Mistakes}\label{SCM}
-\begin{itemize}
-\item The word ``data'' is plural, not singular.
-\item The subscript for the permeability of vacuum $\mu_{0}$, and other common scientific constants, is zero with subscript formatting, not a lowercase letter ``o''.
-\item In American English, commas, semicolons, periods, question and exclamation marks are located within quotation marks only when a complete thought or name is cited, such as a title or full quotation. When quotation marks are used, instead of a bold or italic typeface, to highlight a word or phrase, punctuation should appear outside of the quotation marks. A parenthetical phrase or statement at the end of a sentence is punctuated outside of the closing parenthesis (like this). (A parenthetical sentence is punctuated within the parentheses.)
-\item A graph within a graph is an ``inset'', not an ``insert''. The word alternatively is preferred to the word ``alternately'' (unless you really mean something that alternates).
-\item Do not use the word ``essentially'' to mean ``approximately'' or ``effectively''.
-\item In your paper title, if the words ``that uses'' can accurately replace the word ``using'', capitalize the ``u''; if not, keep using lower-cased.
-\item Be aware of the different meanings of the homophones ``affect'' and ``effect'', ``complement'' and ``compliment'', ``discreet'' and ``discrete'', ``principal'' and ``principle''.
-\item Do not confuse ``imply'' and ``infer''.
-\item The prefix ``non'' is not a word; it should be joined to the word it modifies, usually without a hyphen.
-\item There is no period after the ``et'' in the Latin abbreviation ``et al.''.
-\item The abbreviation ``i.e.'' means ``that is'', and the abbreviation ``e.g.'' means ``for example''.
-\end{itemize}
-An excellent style manual for science writers is \cite{b7}.
 
 \subsection{Authors and Affiliations}
 \textbf{The class file is designed for, but not limited to, six authors.} A 

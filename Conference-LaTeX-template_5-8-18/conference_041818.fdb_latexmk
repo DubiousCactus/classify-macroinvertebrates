@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1526319466 "conference_041818.tex" "conference_041818.pdf" "conference_041818" 1526319466
+["pdflatex"] 1526335348 "conference_041818.tex" "conference_041818.pdf" "conference_041818" 1526335348
   "/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1520157250 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1520157216 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1520157222 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -32,7 +32,6 @@
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1520157213 36281 c355509802a035cadc5f15869451dcee ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1520157213 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1520157213 32734 69e00a6b65cedb993666e42eedb3d48f ""
-  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1520157213 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1520157213 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1520157213 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb" 1520157211 45758 19968a0990191524e34e1994d4a31cb6 ""
@@ -90,11 +89,11 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1525038665 2565685 1f907097ec2b6d0e87a435aad9a0b283 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1520332100 7738160 4cf1cb21f5265c660d145f0679e90847 ""
   "IEEEtran.cls" 1440632924 288304 b67b6fc6c2abb39f9b461923f5199343 ""
-  "conference_041818.aux" 1526319383 2448 8cb000d29f71af260514548090e53915 ""
-  "conference_041818.tex" 1526319464 19704 51558030062aaac626895f6bcb8f8cd3 ""
+  "conference_041818.aux" 1526335157 2624 d13aebc1462601b1aa25ecd23acce9c7 ""
+  "conference_041818.tex" 1526335346 18004 35b87b2a44a52c0ed4adaf296e3f4c49 ""
   "fig1.png" 0 -1 0 ""
   "sample_macrobitches.png" 1526318921 94883 239623727156843e227d082bf1aa73c2 ""
   (generated)
-  "conference_041818.log"
   "conference_041818.pdf"
+  "conference_041818.log"
   "conference_041818.aux"
