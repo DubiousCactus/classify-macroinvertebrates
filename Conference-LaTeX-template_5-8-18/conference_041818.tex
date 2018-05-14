@@ -37,43 +37,48 @@ theo.martin.morales@post.au.dk}
 \section{Introduction}
 Ensuring the quality of water sources is an important task for the good of a human population, as well as the one of its surrounding ecosystem. Water can be infected with all sorts of bacteria, but can also contain a significant amount of micro-organisms that wouldn't be suited for human consumption, but nevertheless being part of a natural aquatic ecosystem that could be seen as a gage of quality and sanity.
 
-    INSERT IMAGE OF MACROINVERTEBRATES HERE
-
 However, measuring such concept isn't as trivial as what is commonly done with regular metrics, and it requires more reasoning and analysing than most standard measures in the scientific domain do. This study focuses on the analysis of known aquatic macroinvertebrates, which are part of aquatic ecosystems in water sources, and their automated classification using a machine learning approach. The end goal is to provide a reliable method for this task, that would ultimately surpass the human expertise in the field. In this paper, a set of well known and commonly used machine learning and computer vision methods are presented, and their results are compared and discussed after application on the dataset; the famous state-of-the-art Convolutional Neural Network will be used as a reference point in the benchmark.
 
 \section{Dataset}
 
 \subsection{Dataset presentation}
+The provided dataset contains a subset of the whole dataset from the original research paper that this project leans on. It contains \textbf{5830} \emph{Training} samples, \textbf{2298} \emph{Validation} samples, and \textbf{3560} \emph{Test} samples. These sets are given in two forms:
+\begin{itemize}
+    \item the original images in color with a \textbf{\textsc{28x28}} pixel dimension, in the JPEG format
+    \item the abstract representations of the images as a set of 4096-dimensional vectors (available inn \emph{CSV}, \emph{Matlab} and \emph{text} formats), obtained after feeding the base pictures to a CNN, pre-trained on the training dataset
+\end{itemize}
 
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
+\begin{figure}[h]
+    \centering
+        \includegraphics[height=4cm]{sample_macrobitches}
+    \caption{Four samples from Baetis niger (top) and Ameletus inopinatus (bottom) classes.}
+\end{figure}
+
+It goes without saying that each set also comes with its corresponding labels definition (available in \emph{CSV}, \emph{Matlab} and \emph{text} formats), except for the \emph{Test} dataset which labels, of course, need to be "guessed" by the classifier.
+
 
 \subsection{Dataset pre-processing}
+One important thing to mention is that the given JPEG pictures are already cropped to focus on the target object, thus minimizing the need for data pre-processing in some cases where not much needs to be done. For example, with computer vision methods such as \emph{SIFT} or \emph{HOG} features classification, a minimal amount of data preparation is necessary for the algorithms to be effective: vector normalization is often just enough. In this study, the \emph{Feature Scaling} normalization technique is used, in order to bring all the dataset's values into the range [0,1]:
 
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
+\begin{equation}
+    x_{new}=\frac{x_i-\min(x)}{\max(x)-\min(x)}
+\end{equation}
 
+With $x_i$ being the current value of the sample (a vector in this case), $\min(x)$ being the minimum value of the current dataset, and $\max(x)$ being the maximum value of the same dataset. This technique is useful when the classifier is computing a lot of multiplications, since it greatly reduces the difference between the two products when the multiplied values are very close to each other, thus restraining the scatter of the samples.
+
+Data standardization can also be used in order to improve the classification results, by reducing the mean and unit variance to zero, using the following equation:
+
+\begin{equation}
+    x_{new}=\frac{x_i-\mu}{\sigma}
+\end{equation}
+
+Where $\mu$ is the mean of the dataset, and $\sigma$ is the variance of the same dataset. 
+
+Concerning the Convolutional Neural Networks approach, a few more things have to be taken into consideration. In this project, a pre-trained CNN is used for fine-tuning over this dataset, meaning that the weights of the convolution layers are unchanged. This implies that the images fed into the network must be the same size as the ones it has been trained with. Without going into further details (more will be explained in the appropriate section), the JPEG images for this dataset had to be scaled up to match the network's input layer (\textsc{299x299} pixels), and some distortion is applied to the \emph{Training} images. Other than that, each image is normalized as previously explained.
 
 \subsection{Dataset augmentation}
-
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
-
+As stated above, \emph{Dataset Augmentation} is a process that is only applied to images used for a Convolutional Neural Network training phase, because it is the classifier that takes the most advantage of the three color channels of an image. It is only useful to augment the \emph{Training} sample images, since those are the only ones that will help the classifier to learn.
+The \emph{Python} script provided by \emph{Tensorflow} for \emph{Inception Resnet v2} tales care of distorting images in order to augment the data set, to ultimately make the network invariant to aspects of the image that do not effect the label. Since the aspect ratio is not respected, and since the resizing method changes depending on the running thread number, the resizing operation may distort the images in a first place. Secondly, each image is randomly flipped horizontally. Finally, the colors are randomly distorted in four different ways.
 
 \section{Prepare Your Paper Before Styling}
 Before you begin to format your paper, first write and save the content as a 
