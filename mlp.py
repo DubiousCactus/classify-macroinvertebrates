@@ -23,9 +23,9 @@ class MultiLayerPerceptron:
     def __init__(self, nb_pixels = 4096, nb_classes = 29, optimizer='Adam'):
         if optimizer == 'SGD': # Stochastic Gradient Descent
             self.optimizerChoice = 'SGD'
-        else if optimizer == 'Adam':
+        elif optimizer == 'Adam':
             self.optimizerChoice = 'Adam'
-        else if optimizer == 'Momentum':
+        elif optimizer == 'Momentum':
             self.optimizerChoice = 'Momentum'
 
         self.nb_pixels = nb_pixels

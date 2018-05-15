@@ -24,8 +24,8 @@ if __name__ == "__main__":
     mlp.addLayer(1024)
     mlp.setInputs(
         # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv", merge_with="datasets/Validate/valVectors.csv"),
-        DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
-        DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
+        DataSet("datasets/Train/trainVectors.csv", labels_path="datasets/Train/trainLbls.csv"),
+        DataSet("datasets/Validate/valVectors.csv", labels_path="datasets/Validate/valLbls.csv"),
         DataSet("datasets/Test/testVectors.csv")
     )
 
