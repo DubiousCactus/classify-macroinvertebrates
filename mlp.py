@@ -92,9 +92,9 @@ class MultiLayerPerceptron:
         # Setup the optimizer
         if self.optimizerChoice == 'Adam':
             optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate)
-        else if self.optimizerChoice == 'SGD':
+        elif self.optimizerChoice == 'SGD':
             optimizer = tf.train.GradientDescentOptimizer(learning_rate = self.learning_rate)
-        else if self.optimizerChoice == 'Momentum':
+        elif self.optimizerChoice == 'Momentum':
             optimizer = tf.train.MomentumOptimizer(learning_rate=self.learning_rate, momentum = 0.75)
 
 
