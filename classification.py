@@ -18,16 +18,18 @@ from sift_svm import SIFT_SupportVectorMachine
 from dataset import DataSet
 
 if __name__ == "__main__":
-    # mlp = MultiLayerPerceptron()
-#     mlp.epochs = 100
-    # mlp.addLayer(2048)
-    # mlp.addLayer(1024)
-    # mlp.setInputs(
+    mlp = MultiLayerPerceptron(optimizer='Adam')
+    mlp.epochs = 100
+    mlp.addLayer(2048)
+    mlp.addLayer(1024)
+    mlp.setInputs(
         # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv", merge_with="datasets/Validate/valVectors.csv"),
-        # # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
-        # DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
-        # DataSet("datasets/Test/testVectors.csv")
-    # )
+        DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
+        DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
+        DataSet("datasets/Test/testVectors.csv")
+    )
+
+    mlp.train()
 
     # if os.path.isfile("model.ckpt.index"):
         # usr_input = 'n'
@@ -57,10 +59,10 @@ if __name__ == "__main__":
     # svm.train()
     # svm.test()
 
-    SIFT_SVM = SIFT_SupportVectorMachine()
-    SIFT_SVM.setInputs(
-        DataSet(vectors_path=None, images_path="datasets/Train/TrainImages", labels_path="datasets/Train/trainLbls.csv"),
-        DataSet(vectors_path=None, images_path="datasets/Validate/ValidationImages", labels_path="datasets/Validate/valLbls.csv"),
-        DataSet(vectors_path=None, images_path="datasets/Test/TestImages")
-    )
-    SIFT_SVM.train()
+    # SIFT_SVM = SIFT_SupportVectorMachine()
+    # SIFT_SVM.setInputs(
+        # DataSet(vectors_path=None, images_path="datasets/Train/TrainImages", labels_path="datasets/Train/trainLbls.csv"),
+        # DataSet(vectors_path=None, images_path="datasets/Validate/ValidationImages", labels_path="datasets/Validate/valLbls.csv"),
+        # DataSet(vectors_path=None, images_path="datasets/Test/TestImages")
+    # )
+    # SIFT_SVM.train()

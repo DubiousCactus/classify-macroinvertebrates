@@ -20,7 +20,14 @@ class MultiLayerPerceptron:
     epochs = 50
     batch_size = 50
 
-    def __init__(self, nb_pixels = 4096, nb_classes = 29):
+    def __init__(self, nb_pixels = 4096, nb_classes = 29, optimizer='Adam'):
+        if optimizer == 'SGD': # Stochastic Gradient Descent
+            self.optimizerChoice = 'SGD'
+        else if optimizer == 'Adam':
+            self.optimizerChoice = 'Adam'
+        else if optimizer == 'Momentum':
+            self.optimizerChoice = 'Momentum'
+
         self.nb_pixels = nb_pixels
         self.nb_classes = nb_classes
         self.inputs = tf.placeholder(tf.float32, [None, nb_pixels]) # Input neurons
@@ -83,9 +90,14 @@ class MultiLayerPerceptron:
         loss_op = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=logits, labels=self.outputs))
 
         # Setup the optimizer
-        # optimizer = tf.train.GradientDescentOptimizer(learning_rate = self.learning_rate)
-        optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate)
-        # optimizer = tf.train.MomentumOptimizer(learning_rate=self.learning_rate, momentum = 0.75)
+        if self.optimizerChoice == 'Adam':
+            optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate)
+        else if self.optimizerChoice == 'SGD':
+            optimizer = tf.train.GradientDescentOptimizer(learning_rate = self.learning_rate)
+        else if self.optimizerChoice == 'Momentum':
+            optimizer = tf.train.MomentumOptimizer(learning_rate=self.learning_rate, momentum = 0.75)
+
+
         train_op = optimizer.minimize(loss_op)
 
         # finally setup the initialisation operator

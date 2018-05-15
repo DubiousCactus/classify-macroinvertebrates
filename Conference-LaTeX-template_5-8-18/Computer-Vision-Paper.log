@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.3.6)  15 MAY 2018 01:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.3.6)  15 MAY 2018 17:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**conference_041818.tex
-(./conference_041818.tex
+**Computer-Vision-Paper.tex
+(./Computer-Vision-Paper.tex
 LaTeX2e <2017-04-15>
 Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
 (./IEEEtran.cls
@@ -294,12 +294,8 @@ Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
 Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
-) (./conference_041818.aux
-
-LaTeX Warning: Label `fig' multiply defined.
-
-)
-\openout1 = `conference_041818.aux'.
+) (./Computer-Vision-Paper.aux)
+\openout1 = `Computer-Vision-Paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
 LaTeX Font Info:    ... okay on input line 12.
@@ -394,7 +390,7 @@ Package pdftex.def Info: sample_macrobitches.png  used on input line 52.
 
 
  <./sample_macrobitches.png>] [2]
-./conference_041818.tex:117: Undefined control sequence.
+./Computer-Vision-Paper.tex:117: Undefined control sequence.
 \\->\let \reserved@e 
                      \relax \let \reserved@f \relax \@ifstar {\let \reserved...
 l.117 ...n: \\ Hyperparameters and Configurations}
@@ -405,7 +401,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-./conference_041818.tex:117: Undefined control sequence.
+./Computer-Vision-Paper.tex:117: Undefined control sequence.
 \\->\let \reserved@e \relax \let \reserved@f 
                                              \relax \@ifstar {\let \reserved...
 l.117 ...n: \\ Hyperparameters and Configurations}
@@ -416,7 +412,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-./conference_041818.tex:117: Argument of \@caption has an extra }.
+./Computer-Vision-Paper.tex:117: Argument of \@caption has an extra }.
 <inserted text> 
                 \par 
 l.117 ...n: \\ Hyperparameters and Configurations}
@@ -430,7 +426,7 @@ your `}' was spurious, just type `2' and it will go away.
 
 Runaway argument?
 \@captype {\def \reserved@a *{\let \reserved@e \vadjust \let \reserved@f \ETC.
-./conference_041818.tex:117: Paragraph ended before \@caption was complete.
+./Computer-Vision-Paper.tex:117: Paragraph ended before \@caption was complete.
 <to be read again> 
                    \par 
 l.117 ...n: \\ Hyperparameters and Configurations}
@@ -439,49 +435,21 @@ I suspect you've forgotten a `}', causing me to apply this
 control sequence to too much text. How can we recover?
 My plan is to forget the whole thing and hope for the best.
 
-./conference_041818.tex:174: Undefined control sequence.
-l.174     d_E(y,x) = \norm
-                          {x} ||y - x||_2 = \sqrt{(y - x)^\intercal(y-x)}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-
-LaTeX Warning: File `fig1.png' not found on input line 189.
-
-
-./conference_041818.tex:189: Package pdftex.def Error: File `fig1.png' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.189 \centerline{\includegraphics{fig1.png}}
-                                             
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 189.
-(/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
-Underfull \hbox (badness 10000) in paragraph at lines 203--204
+Underfull \hbox (badness 10000) in paragraph at lines 190--191
 []\OT1/ptm/m/n/8 Ji Yang, ``ReLU and Soft-max Ac-ti-va-tion Func-tions,''
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 203--204
+Underfull \hbox (badness 10000) in paragraph at lines 190--191
 \OT1/ptm/m/n/8 https://github.com/Kulbear/deep-learning-nano-foundation/wiki/ReLU-
  []
 
 
-Underfull \hbox (badness 1946) in paragraph at lines 204--205
+Underfull \hbox (badness 1946) in paragraph at lines 191--192
 []\OT1/ptm/m/n/8 Tensorflow, ``TensorFlow-Slim im-age clas-si-fi-ca-tion model li-brary,''
  []
 
-[3]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -493,26 +461,20 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
-
-] (./conference_041818.aux)
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+[3] (./Computer-Vision-Paper.aux) ) 
 Here is how much of TeX's memory you used:
- 4388 strings out of 492982
- 62888 string characters out of 6138580
- 131887 words of memory out of 5000000
- 7880 multiletter control sequences out of 15000+600000
- 45599 words of font info for 92 fonts, out of 8000000 for 9000
+ 4352 strings out of 492982
+ 62437 string characters out of 6138580
+ 130848 words of memory out of 5000000
+ 7850 multiletter control sequences out of 15000+600000
+ 45084 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,9n,35p,843b,277s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on conference_041818.pdf (4 pages, 284622 bytes).
+ 41i,9n,35p,847b,277s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Computer-Vision-Paper.pdf (3 pages, 276469 bytes).
 PDF statistics:
- 75 PDF objects out of 1000 (max. 8388607)
- 53 compressed objects within 1 object stream
+ 68 PDF objects out of 1000 (max. 8388607)
+ 48 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
