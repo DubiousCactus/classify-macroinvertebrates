@@ -16,6 +16,7 @@ from mlp import MultiLayerPerceptron
 from svm import SupportVectorMachine
 from sift_svm import SIFT_SupportVectorMachine
 from nn import NearestNeighbour
+from sift_nn import SIFT_NearestNeighbour
 from dataset import DataSet
 
 if __name__ == "__main__":
@@ -69,13 +70,21 @@ if __name__ == "__main__":
 #     SIFT_SVM.train()
 
 
-    NN = NearestNeighbour()
-    NN.setInputs(
-        DataSet("datasets/Train/trainVectors.csv",
-                labels_path="datasets/Train/trainLbls.csv", normalize = False),
-        DataSet("datasets/Validate/valVectors.csv",
-                labels_path="datasets/Validate/valLbls.csv", normalize = False),
-        DataSet("datasets/Test/testVectors.csv", normalize = False)
+#     NN = NearestNeighbour()
+    # NN.setInputs(
+        # DataSet("datasets/Train/trainVectors.csv",
+                # labels_path="datasets/Train/trainLbls.csv", normalize = False),
+        # DataSet("datasets/Validate/valVectors.csv",
+                # labels_path="datasets/Validate/valLbls.csv", normalize = False),
+        # DataSet("datasets/Test/testVectors.csv", normalize = False)
+    # )
+#     NN.validate()
+
+    SIFT_NN = SIFT_NearestNeighbour()
+    SIFT_NN.setInputs(
+        DataSet(vectors_path=None, images_path="datasets/Train/TrainImages", labels_path="datasets/Train/trainLbls.csv"),
+        DataSet(vectors_path=None, images_path="datasets/Validate/ValidationImages", labels_path="datasets/Validate/valLbls.csv"),
+        DataSet(vectors_path=None, images_path="datasets/Test/TestImages")
     )
-    NN.validate()
+    SIFT_NN.validate()
 
