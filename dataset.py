@@ -19,15 +19,16 @@ from os.path import isfile, join
 class DataSet:
 
 
-    def __init__(self, vectors_path, images_path = None, labels_path = None, merge_with = None):
+    def __init__(self, vectors_path, images_path = None, labels_path = None,
+                 merge_with = None, normalize = True):
         self.vectors = []
         self.images_paths = {}
         self.labels = []
 
         if vectors_path is not None:
             print("[*] Loading dataset '{}'".format(vectors_path))
-            self.loadVectors(vectors_path)
-            if merge_with: self.mergeVectors(merge_with)
+            self.loadVectors(vectors_path, normalize)
+            if merge_with: self.mergeVectors(merge_with, normalize)
 
         if images_path is not None:
             print("[*] Loading images in '{}'".format(images_path))
@@ -48,11 +49,12 @@ class DataSet:
         self.labels = np.array([int(line) for line in file_])
 
 
-    def mergeVectors(self, file_path):
+    def mergeVectors(self, file_path, normalize = True):
         file_ = open(file_path, 'r')
         vectors = [np.array(line.split(','), np.float64) for line in file_]
         vectors = np.transpose(vectors) # Transposed in the file, for some reason...
-        vectors /= vectors.max() # Normalise the data
+        if normalize:
+            vectors /= vectors.max() # Normalise the data
         self.vectors = np.concatenate((self.vectors, vectors))
 
 
@@ -61,11 +63,12 @@ class DataSet:
         self.labels = np.concatenate((self.labels, np.array([int(line) for line in labels_file])))
 
 
-    def loadVectors(self, file_path):
+    def loadVectors(self, file_path, normalize = True):
         file_ = open(file_path, 'r')
         self.vectors = [np.array(line.split(','), np.float64) for line in file_]
         self.vectors = np.transpose(self.vectors) # Transposed in the file, for some reason...
-        self.vectors /= self.vectors.max() # Normalise the data
+        if normalize:
+            self.vectors /= self.vectors.max() # Normalise the data
 
 
     def shuffle(self):
