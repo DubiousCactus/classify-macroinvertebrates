@@ -21,9 +21,10 @@ from sklearn.externals import joblib
 
 class SIFT_SupportVectorMachine:
 
-    def __init__(self, K = 300):
+    def __init__(self, K = 405):
         random.seed()
-        self.model = svm.SVC(probability=False, kernel='rbf', C=19, gamma=.0082)
+        # self.model = svm.SVC(probability=False, kernel='rbf', C=8, gamma=.0082)
+        self.model = svm.SVC(probability=False, kernel='linear', C=8, gamma=.0082)
         self.training_descriptors = {}
         self.validation_descriptors = {}
         self.testing_descriptors = {}

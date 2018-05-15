@@ -18,9 +18,9 @@ from sklearn import svm
 class SupportVectorMachine:
 
     def __init__(self):
-        self.model = svm.SVC(kernel='rbf', C=19, gamma=.008195)
+        # self.model = svm.SVC(kernel='rbf', C=19, gamma=.008195)
         # self.model = svm.SVC(probability=False, kernel='linear', C=19, gamma=.008195)
-        # self.model = svm.SVC(kernel='linear', C=0.98999)
+        self.model = svm.SVC(kernel='linear', C=0.98999)
 
 
     def setInputs(self, training, validation, testing):

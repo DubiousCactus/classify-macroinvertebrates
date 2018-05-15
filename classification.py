@@ -15,21 +15,22 @@ import os
 from mlp import MultiLayerPerceptron
 from svm import SupportVectorMachine
 from sift_svm import SIFT_SupportVectorMachine
+from nn import NearestNeighbour
 from dataset import DataSet
 
 if __name__ == "__main__":
-    mlp = MultiLayerPerceptron(optimizer='Adam')
-    mlp.epochs = 100
-    mlp.addLayer(2048)
-    mlp.addLayer(1024)
-    mlp.setInputs(
-        # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv", merge_with="datasets/Validate/valVectors.csv"),
-        DataSet("datasets/Train/trainVectors.csv", labels_path="datasets/Train/trainLbls.csv"),
-        DataSet("datasets/Validate/valVectors.csv", labels_path="datasets/Validate/valLbls.csv"),
-        DataSet("datasets/Test/testVectors.csv")
-    )
+#     mlp = MultiLayerPerceptron(optimizer='Adam')
+    # mlp.epochs = 100
+    # mlp.addLayer(2048)
+    # mlp.addLayer(1024)
+    # mlp.setInputs(
+        # # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv", merge_with="datasets/Validate/valVectors.csv"),
+        # DataSet("datasets/Train/trainVectors.csv", labels_path="datasets/Train/trainLbls.csv"),
+        # DataSet("datasets/Validate/valVectors.csv", labels_path="datasets/Validate/valLbls.csv"),
+        # DataSet("datasets/Test/testVectors.csv")
+    # )
 
-    mlp.train()
+#     mlp.train()
 
     # if os.path.isfile("model.ckpt.index"):
         # usr_input = 'n'
@@ -51,9 +52,9 @@ if __name__ == "__main__":
 
     # svm = SupportVectorMachine()
     # svm.setInputs(
-        # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv", merge_with="datasets/Validate/valVectors.csv"),
-        # # DataSet("datasets/Train/trainVectors.csv", "datasets/Train/trainLbls.csv"),
-        # DataSet("datasets/Validate/valVectors.csv", "datasets/Validate/valLbls.csv"),
+        # # DataSet("datasets/Train/trainVectors.csv", labels_path="datasets/Train/trainLbls.csv", merge_with="datasets/Validate/valVectors.csv"),
+        # DataSet("datasets/Train/trainVectors.csv", labels_path="datasets/Train/trainLbls.csv"),
+        # DataSet("datasets/Validate/valVectors.csv", labels_path="datasets/Validate/valLbls.csv"),
         # DataSet("datasets/Test/testVectors.csv")
     # )
     # svm.train()
@@ -65,4 +66,14 @@ if __name__ == "__main__":
         # DataSet(vectors_path=None, images_path="datasets/Validate/ValidationImages", labels_path="datasets/Validate/valLbls.csv"),
         # DataSet(vectors_path=None, images_path="datasets/Test/TestImages")
     # )
-    # SIFT_SVM.train()
+#     SIFT_SVM.train()
+
+
+    NN = NearestNeighbour()
+    NN.setInputs(
+        DataSet("datasets/Train/trainVectors.csv", labels_path="datasets/Train/trainLbls.csv"),
+        DataSet("datasets/Validate/valVectors.csv", labels_path="datasets/Validate/valLbls.csv"),
+        DataSet("datasets/Test/testVectors.csv")
+    )
+    NN.validate()
+
